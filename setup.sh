@@ -58,9 +58,9 @@ if [ ! -f "icons/icon16.png" ] || [ ! -f "icons/icon48.png" ] || [ ! -f "icons/i
     # Create simple placeholder icons with ImageMagick if available
     if command -v convert &> /dev/null; then
         echo "Generating placeholder icons with ImageMagick..."
-        convert -size 16x16 xc:#667eea icons/icon16.png 2>/dev/null
-        convert -size 48x48 xc:#667eea icons/icon48.png 2>/dev/null
-        convert -size 128x128 xc:#667eea icons/icon128.png 2>/dev/null
+        convert -size 16x16 xc:#0e3ec4 icons/icon16.png 2>/dev/null
+        convert -size 48x48 xc:#0e3ec4 icons/icon48.png 2>/dev/null
+        convert -size 128x128 xc:#0e3ec4 icons/icon128.png 2>/dev/null
         echo -e "${GREEN}✅ Placeholder icons created${NC}"
     else
         echo -e "${BLUE}ℹ️  ImageMagick is not installed. Use create-icons.html${NC}"
