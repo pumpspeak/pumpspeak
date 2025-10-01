@@ -1,39 +1,39 @@
-# Icônes PumpSpeak
+# PumpSpeak Icons
 
-Ce dossier doit contenir les icônes de l'extension aux tailles suivantes :
+This folder should contain the extension icons in the following sizes:
 - icon16.png (16x16px)
 - icon48.png (48x48px)
 - icon128.png (128x128px)
 
-## Création des icônes
+## Creating Icons
 
-Vous pouvez créer vos icônes avec :
+You can create your icons with:
 - Figma / Adobe Illustrator
 - Canva
 - GIMP / Photoshop
 
-## Recommandations
+## Recommendations
 
-- Format PNG avec transparence
-- Thème : Microphone / Chat vocal / Crypto
-- Couleurs : Violet/Bleu (correspondant au gradient de l'UI)
-- Style : Moderne, minimaliste
+- PNG format with transparency
+- Theme: Microphone / Voice chat / Crypto
+- Colors: Purple/Blue (matching the UI gradient)
+- Style: Modern, minimalist
 
-## Générer rapidement des icônes
+## Quickly Generate Icons
 
-Si vous avez une image source, vous pouvez la redimensionner avec ImageMagick :
+If you have a source image, you can resize it with ImageMagick:
 
 ```bash
-# Installer ImageMagick
+# Install ImageMagick
 brew install imagemagick  # macOS
 sudo apt install imagemagick  # Linux
 
-# Générer les icônes
+# Generate icons
 convert source.png -resize 16x16 icon16.png
 convert source.png -resize 48x48 icon48.png
 convert source.png -resize 128x128 icon128.png
 ```
 
-Ou utilisez un service en ligne comme :
+Or use an online service like:
 - https://realfavicongenerator.net/
 - https://www.favicon-generator.org/
