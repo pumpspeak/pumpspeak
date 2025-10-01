@@ -385,11 +385,17 @@ class VoiceClient {
     this.widget = widget;
     this.ws = null;
     this.peers = new Map();
+    this.peerSpeakingState = new Map(); // Track speaking state for each peer
     this.localStream = null;
     this.isMicEnabled = false;
     this.isTalking = false;
     this.volume = 1.0;
     this.userId = 'user_' + Math.random().toString(36).substr(2, 9);
+    
+    // Auto-update users list every 500ms
+    this.updateInterval = setInterval(() => {
+      this.updateWidgetUsers();
+    }, 500);
   }
 
   async connect() {
@@ -478,6 +484,10 @@ class VoiceClient {
       peer.close();
       this.peers.delete(userId);
     }
+    
+    // Clean up speaking state
+    this.peerSpeakingState.delete(userId);
+    
     this.updateWidgetUsers();
   }
 
@@ -593,6 +603,45 @@ class VoiceClient {
     
     audio.srcObject = stream;
     audio.volume = this.volume;
+    
+    // Detect when remote user is speaking
+    this.detectSpeaking(userId, stream);
+  }
+  
+  detectSpeaking(userId, stream) {
+    try {
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const analyser = audioContext.createAnalyser();
+      const microphone = audioContext.createMediaStreamSource(stream);
+      const dataArray = new Uint8Array(analyser.frequencyBinCount);
+      
+      analyser.smoothingTimeConstant = 0.8;
+      analyser.fftSize = 1024;
+      microphone.connect(analyser);
+      
+      const checkAudio = () => {
+        analyser.getByteFrequencyData(dataArray);
+        const average = dataArray.reduce((a, b) => a + b) / dataArray.length;
+        
+        // Threshold for speaking detection
+        const isSpeaking = average > 10;
+        
+        // Update speaking state
+        if (this.peerSpeakingState.get(userId) !== isSpeaking) {
+          this.peerSpeakingState.set(userId, isSpeaking);
+        }
+        
+        // Continue checking
+        if (this.peers.has(userId)) {
+          requestAnimationFrame(checkAudio);
+        }
+      };
+      
+      checkAudio();
+    } catch (error) {
+      console.error('PumpSpeak: Speaking detection error:', error);
+      this.peerSpeakingState.set(userId, false);
+    }
   }
 
   async enableMic() {
@@ -661,6 +710,7 @@ class VoiceClient {
   leaveRoom() {
     this.peers.forEach(peer => peer.close());
     this.peers.clear();
+    this.peerSpeakingState.clear();
     this.send({ type: 'leave', roomId: this.roomId, userId: this.userId });
     this.updateWidgetUsers();
   }
@@ -674,6 +724,12 @@ class VoiceClient {
     
     if (this.ws) {
       this.ws.close();
+    }
+    
+    // Clear auto-update interval
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+      this.updateInterval = null;
     }
     
     this.cleanup();
@@ -696,7 +752,7 @@ class VoiceClient {
       users.push({
         name: userId.substring(5, 10),
         isMicEnabled: true,
-        isSpeaking: false
+        isSpeaking: this.peerSpeakingState.get(userId) || false
       });
     });
     
