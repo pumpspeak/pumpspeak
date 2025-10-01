@@ -1,20 +1,20 @@
-# 🚀 Guide de Déploiement PumpSpeak
+# 🚀 PumpSpeak Deployment Guide
 
-Ce guide t'explique comment déployer PumpSpeak sur Railway et publier l'extension sur le Chrome Web Store.
+This guide explains how to deploy PumpSpeak on Railway and publish the extension on the Chrome Web Store.
 
 ---
 
-## 📦 Partie 1 : Déployer le Serveur sur Railway
+## 📦 Part 1: Deploy the Server on Railway
 
-### Étape 1 : Créer un compte Railway
+### Step 1: Create a Railway Account
 
-1. Va sur [railway.app](https://railway.app)
-2. Clique sur **"Start a New Project"**
-3. Connecte-toi avec GitHub
+1. Go to [railway.app](https://railway.app)
+2. Click **"Start a New Project"**
+3. Sign in with GitHub
 
-### Étape 2 : Préparer le repository GitHub
+### Step 2: Prepare the GitHub Repository
 
-1. **Crée un nouveau repository GitHub** (public ou privé)
+1. **Create a new GitHub repository** (public or private)
    ```bash
    cd /Users/bassamchaouki/pumpspeak
    git init
@@ -22,85 +22,85 @@ Ce guide t'explique comment déployer PumpSpeak sur Railway et publier l'extensi
    git commit -m "Initial commit - PumpSpeak"
    ```
 
-2. **Push vers GitHub** :
+2. **Push to GitHub**:
    ```bash
-   git remote add origin https://github.com/TON_USERNAME/pumpspeak.git
+   git remote add origin https://github.com/YOUR_USERNAME/pumpspeak.git
    git branch -M main
    git push -u origin main
    ```
 
-### Étape 3 : Déployer sur Railway
+### Step 3: Deploy on Railway
 
-1. Sur Railway, clique **"Deploy from GitHub repo"**
-2. Sélectionne ton repository `pumpspeak`
-3. Railway va détecter automatiquement Node.js
+1. On Railway, click **"Deploy from GitHub repo"**
+2. Select your `pumpspeak` repository
+3. Railway will automatically detect Node.js
 
-4. **Configure le projet** :
-   - Clique sur le service déployé
-   - Va dans **Settings** → **Root Directory**
-   - Entre : `server` (car ton serveur est dans le dossier server/)
-   - Clique **Save**
+4. **Configure the project**:
+   - Click on the deployed service
+   - Go to **Settings** → **Root Directory**
+   - Enter: `server` (because your server is in the server/ folder)
+   - Click **Save**
 
-5. **Obtiens ton URL** :
-   - Va dans **Settings** → **Networking**
-   - Clique **Generate Domain**
-   - Tu vas avoir une URL comme : `pumpspeak-production.up.railway.app`
-   - **COPIE CETTE URL** ⚠️
+5. **Get your URL**:
+   - Go to **Settings** → **Networking**
+   - Click **Generate Domain**
+   - You'll get a URL like: `pumpspeak-production.up.railway.app`
+   - **COPY THIS URL** ⚠️
 
-### Étape 4 : Vérifier le déploiement
+### Step 4: Verify Deployment
 
-1. Ouvre ton URL Railway dans le navigateur
-2. Tu devrais voir : **"PumpSpeak Signaling Server"**
-3. ✅ Le serveur est en ligne !
+1. Open your Railway URL in the browser
+2. You should see: **"PumpSpeak Signaling Server"**
+3. ✅ The server is online!
 
 ---
 
-## 🔧 Partie 2 : Mettre à jour l'Extension
+## 🔧 Part 2: Update the Extension
 
-### Étape 1 : Configurer l'URL du serveur
+### Step 1: Configure the Server URL
 
-1. Ouvre `config.js`
-2. Remplace l'URL :
+1. Open `config.js`
+2. Replace the URL:
    ```javascript
    const PUMPSPEAK_CONFIG = {
      // Change this to your Railway URL (with wss:// not ws://)
      WS_URL: 'wss://pumpspeak-production.up.railway.app',
    };
    ```
-   ⚠️ **Important** : Utilise `wss://` (avec SSL) et non `ws://`
+   ⚠️ **Important**: Use `wss://` (with SSL) not `ws://`
 
-### Étape 2 : Tester localement
+### Step 2: Test Locally
 
-1. Recharge l'extension dans Chrome :
+1. Reload the extension in Chrome:
    - `chrome://extensions/`
-   - Clique sur 🔄 pour PumpSpeak
+   - Click 🔄 for PumpSpeak
 
-2. Va sur `pump.fun` et teste un coin
-3. Le widget devrait se connecter au serveur Railway !
+2. Go to `pump.fun` and test a coin
+3. The widget should connect to the Railway server!
 
 ---
 
-## 🏪 Partie 3 : Publier sur Chrome Web Store
+## 🏪 Part 3: Publish on Chrome Web Store
 
-### Prérequis
+### Prerequisites
 
-1. **Compte Google Developer** ($5 one-time fee)
-   - Va sur [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole)
-   - Paye les $5 de frais d'inscription
+1. **Google Developer Account** ($5 one-time fee)
+   - Go to [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole)
+   - Pay the $5 registration fee
 
-2. **Assets requis** :
-   - ✅ Icônes (déjà créées : 16x16, 48x48, 128x128)
-   - ⬜ Screenshots (1280x800 ou 640x400) - minimum 1, maximum 5
-   - ⬜ Petite tuile promotionnelle (440x280) - optionnelle
-   - ⬜ Description de l'extension
-   - ⬜ Politique de confidentialité
+2. **Required Assets**:
+   - ✅ Icons (already created: 16x16, 48x48, 128x128)
+   - ⬜ Screenshots (1280x800 or 640x400) - minimum 1, maximum 5
+   - ⬜ Small promotional tile (440x280) - optional
+   - ⬜ Extension description
+   - ⬜ Privacy policy
 
-### Étape 1 : Créer le package .zip
+### Step 1: Create the .zip Package
 
 ```bash
 cd /Users/bassamchaouki/pumpspeak
 
-# Crée un zip avec uniquement les fichiers de l'extension
+# Create a zip with only the extension files
 zip -r pumpspeak-extension.zip \
   manifest.json \
   content.js \
@@ -112,23 +112,23 @@ zip -r pumpspeak-extension.zip \
   icons/
 ```
 
-### Étape 2 : Uploader l'extension
+### Step 2: Upload the Extension
 
-1. Va sur le [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole)
-2. Clique **"New Item"**
-3. Upload le fichier `pumpspeak-extension.zip`
-4. Remplis les informations :
+1. Go to the [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole)
+2. Click **"New Item"**
+3. Upload the `pumpspeak-extension.zip` file
+4. Fill in the information:
 
-#### Informations de base
+#### Basic Information
 
-**Nom** : PumpSpeak
+**Name**: PumpSpeak
 
-**Résumé** (132 caractères max) :
+**Summary** (132 characters max):
 ```
 Voice chat for pump.fun traders. Talk with other holders directly on token pages with push-to-talk functionality.
 ```
 
-**Description détaillée** :
+**Detailed Description**:
 ```
 PumpSpeak brings real-time voice communication to pump.fun token pages.
 
@@ -152,20 +152,20 @@ Perfect for traders who want to discuss tokens in real-time without leaving the 
 Privacy: All voice data is peer-to-peer (WebRTC). No voice is recorded or stored.
 ```
 
-**Catégorie** : Social & Communication
+**Category**: Social & Communication
 
-**Langue** : English
+**Language**: English
 
 #### Screenshots
 
-Tu dois créer **au moins 1 screenshot** (1280x800 ou 640x400) :
-- Capture le widget sur une page pump.fun
-- Montre l'interface avec des utilisateurs connectés
-- Montre le push-to-talk en action
+You need to create **at least 1 screenshot** (1280x800 or 640x400):
+- Capture the widget on a pump.fun page
+- Show the interface with connected users
+- Show push-to-talk in action
 
-#### Politique de confidentialité
+#### Privacy Policy
 
-Crée une page simple (peut être un GitHub Gist ou page HTML) :
+Create a simple page (can be a GitHub Gist or HTML page):
 
 ```markdown
 # Privacy Policy - PumpSpeak
@@ -189,60 +189,59 @@ The extension requires:
 For questions: [your-email@example.com]
 ```
 
-Upload cette URL dans le champ "Privacy Policy"
+Upload this URL in the "Privacy Policy" field
 
-### Étape 3 : Soumettre pour review
+### Step 3: Submit for Review
 
-1. Remplis tous les champs requis
-2. Clique **"Submit for Review"**
-3. La review prend généralement **1-3 jours**
+1. Fill in all required fields
+2. Click **"Submit for Review"**
+3. Review typically takes **1-3 days**
 
 ---
 
-## ✅ Checklist Finale
+## ✅ Final Checklist
 
-Avant de publier :
+Before publishing:
 
-- [ ] Serveur déployé sur Railway et fonctionnel
-- [ ] `config.js` mis à jour avec l'URL Railway (wss://)
-- [ ] Extension testée avec le serveur en production
-- [ ] Compte Chrome Developer créé ($5 payés)
-- [ ] Au moins 1 screenshot de qualité
-- [ ] Description complète
-- [ ] Politique de confidentialité publiée
-- [ ] Package .zip créé
-- [ ] Extension uploadée sur Chrome Web Store
+- [ ] Server deployed on Railway and functional
+- [ ] `config.js` updated with Railway URL (wss://)
+- [ ] Extension tested with production server
+- [ ] Chrome Developer account created ($5 paid)
+- [ ] At least 1 quality screenshot
+- [ ] Complete description
+- [ ] Privacy policy published
+- [ ] .zip package created
+- [ ] Extension uploaded to Chrome Web Store
 
 ---
 
 ## 🆘 Troubleshooting
 
-### Le widget ne se connecte pas au serveur Railway
+### Widget doesn't connect to Railway server
 
-1. Vérifie que l'URL dans `config.js` utilise `wss://` (pas `ws://`)
-2. Vérifie que le domaine Railway est correct
-3. Ouvre la console Chrome (F12) pour voir les erreurs
+1. Check that the URL in `config.js` uses `wss://` (not `ws://`)
+2. Verify that the Railway domain is correct
+3. Open Chrome console (F12) to see errors
 
-### Railway dit "Application Error"
+### Railway shows "Application Error"
 
-1. Va dans les logs Railway
-2. Vérifie que le `Root Directory` est bien `server`
-3. Vérifie que `package.json` et `server.js` sont bien dans le dossier `server/`
+1. Go to Railway logs
+2. Verify that `Root Directory` is set to `server`
+3. Check that `package.json` and `server.js` are in the `server/` folder
 
-### Chrome Web Store rejette l'extension
+### Chrome Web Store rejects the extension
 
-Les raisons courantes :
-- Politique de confidentialité manquante
-- Screenshots de mauvaise qualité
-- Description pas assez claire
-- Permissions non justifiées
+Common reasons:
+- Missing privacy policy
+- Poor quality screenshots
+- Unclear description
+- Unjustified permissions
 
 ---
 
-## 🎉 C'est fait !
+## 🎉 You're Done!
 
-Une fois approuvé, ton extension sera disponible sur :
-`https://chrome.google.com/webstore/detail/[ton-extension-id]`
+Once approved, your extension will be available at:
+`https://chrome.google.com/webstore/detail/[your-extension-id]`
 
-Tu pourras partager ce lien pour que les gens installent PumpSpeak ! 🚀
-
+You can share this link for people to install PumpSpeak! 🚀

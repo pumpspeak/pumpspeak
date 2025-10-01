@@ -1,220 +1,220 @@
-# ✨ Fonctionnalités de PumpSpeak
+# ✨ PumpSpeak Features
 
-## 🎯 Fonctionnalités actuelles (v1.0)
+## 🎯 Current Features (v1.0)
 
-### 🔍 Détection automatique
-- ✅ Détecte automatiquement quand vous visitez une page de coin sur pump.fun
-- ✅ Extrait l'ID du coin depuis l'URL
-- ✅ Surveille les changements de page (SPA support)
-- ✅ Widget s'affiche/disparaît automatiquement
+### 🔍 Automatic Detection
+- ✅ Automatically detects when you visit a coin page on pump.fun
+- ✅ Extracts coin ID from the URL
+- ✅ Monitors page changes (SPA support)
+- ✅ Widget shows/hides automatically
 
-### 🎙️ Chat vocal
-- ✅ Connexions WebRTC peer-to-peer
-- ✅ Audio haute qualité
-- ✅ Pas d'enregistrement (privacy first)
-- ✅ Liste des utilisateurs en temps réel
-- ✅ Indicateur visuel de qui parle
+### 🎙️ Voice Chat
+- ✅ Peer-to-peer WebRTC connections
+- ✅ High-quality audio
+- ✅ No recording (privacy first)
+- ✅ Real-time user list
+- ✅ Visual indicator of who's speaking
 
-### 🎚️ Contrôles audio
-- ✅ **Mode Push-to-Talk** : Maintenez ESPACE pour parler
-- ✅ **Mode Always On** : Micro toujours actif
-- ✅ Activation/désactivation du micro
-- ✅ Réglage du volume (0-100%)
-- ✅ Contrôle indépendant pour chaque utilisateur
+### 🎚️ Audio Controls
+- ✅ **Push-to-Talk Mode**: Hold SPACE to speak
+- ✅ **Always On Mode**: Mic always active
+- ✅ Enable/disable microphone
+- ✅ Volume control (0-100%)
+- ✅ Independent control for each user
 
-### 🏠 Gestion des rooms
-- ✅ Une room par coin automatiquement
-- ✅ Changement automatique quand vous changez de coin
-- ✅ Déconnexion automatique en quittant pump.fun
-- ✅ Support de rooms illimitées
+### 🏠 Room Management
+- ✅ One room per coin automatically
+- ✅ Automatic switch when you change coins
+- ✅ Automatic disconnection when leaving pump.fun
+- ✅ Unlimited room support
 
-### 🎨 Interface utilisateur
-- ✅ Widget moderne avec gradient violet
-- ✅ Design minimaliste et non-intrusif
-- ✅ Positionné en bas à droite
-- ✅ Peut être replié/déplié
-- ✅ Responsive et accessible
+### 🎨 User Interface
+- ✅ Modern widget with glassmorphism design
+- ✅ Minimalist and non-intrusive design
+- ✅ Positioned in bottom right
+- ✅ Can be minimized/expanded
+- ✅ Responsive and accessible
 
 ### ⚙️ Configuration
-- ✅ Page de paramètres dans la popup
-- ✅ URL du serveur configurable
-- ✅ Mode par défaut configurable
-- ✅ Volume par défaut configurable
-- ✅ Paramètres sauvegardés automatiquement
+- ✅ Settings page in popup
+- ✅ Configurable server URL
+- ✅ Configurable default mode
+- ✅ Configurable default volume
+- ✅ Automatically saved settings
 
-### 🖥️ Serveur
-- ✅ Serveur signaling WebSocket
-- ✅ Gestion de rooms multiples
-- ✅ Notifications d'utilisateurs
-- ✅ Coordination WebRTC (offer/answer/ICE)
-- ✅ Stats en temps réel
-- ✅ Support de déploiement facile
+### 🖥️ Server
+- ✅ WebSocket signaling server
+- ✅ Multiple room management
+- ✅ User notifications
+- ✅ WebRTC coordination (offer/answer/ICE)
+- ✅ Real-time stats
+- ✅ Easy deployment support
 
-## 🚀 Roadmap - Prochaines fonctionnalités
+## 🚀 Roadmap - Upcoming Features
 
-### Phase 2 - Authentification & Sécurité
+### Phase 2 - Authentication & Security
 
 #### 🔐 Wallet Authentication
-- [ ] Connexion avec wallet Solana (Phantom, Solflare)
-- [ ] Signature de message pour prouver la propriété
-- [ ] Affichage de l'adresse publique
-- [ ] Avatar basé sur l'adresse wallet
+- [ ] Solana wallet connection (Phantom, Solflare)
+- [ ] Message signing to prove ownership
+- [ ] Public address display
+- [ ] Wallet address-based avatar
 
 #### ✅ Holder Verification
-- [ ] Vérification on-chain du holding
-- [ ] Badge "Verified Holder"
-- [ ] Minimum d'tokens requis pour parler
-- [ ] Affichage du montant possédé
+- [ ] On-chain holding verification
+- [ ] "Verified Holder" badge
+- [ ] Minimum token requirement to speak
+- [ ] Display of token amount held
 
-#### 🛡️ Modération
-- [ ] Système de ban/mute
-- [ ] Modérateurs de room (top holders)
-- [ ] Report d'utilisateurs
-- [ ] Liste noire partagée
+#### 🛡️ Moderation
+- [ ] Ban/mute system
+- [ ] Room moderators (top holders)
+- [ ] User reporting
+- [ ] Shared blacklist
 
-### Phase 3 - Features avancées
+### Phase 3 - Advanced Features
 
-#### 💬 Chat Texte
-- [ ] Chat texte en parallèle du vocal
-- [ ] Partage de liens
-- [ ] Emojis et réactions
-- [ ] Historique des messages
+#### 💬 Text Chat
+- [ ] Text chat alongside voice
+- [ ] Link sharing
+- [ ] Emojis and reactions
+- [ ] Message history
 
 #### 📊 Analytics & Stats
-- [ ] Nombre d'utilisateurs connectés
-- [ ] Temps passé dans chaque room
-- [ ] Coins les plus populaires
-- [ ] Statistiques personnelles
+- [ ] Number of connected users
+- [ ] Time spent in each room
+- [ ] Most popular coins
+- [ ] Personal statistics
 
 #### 🎥 Streaming & Recording
-- [ ] Mode "Talk Show" (speaker + listeners)
-- [ ] Enregistrement des conversations (opt-in)
-- [ ] Partage de clips audio
-- [ ] Export vers Twitter Spaces style
+- [ ] "Talk Show" mode (speaker + listeners)
+- [ ] Conversation recording (opt-in)
+- [ ] Audio clip sharing
+- [ ] Export to Twitter Spaces style
 
-#### 🌐 Multi-plateforme
-- [ ] Support Firefox
-- [ ] Extension Safari
+#### 🌐 Multi-platform
+- [ ] Firefox support
+- [ ] Safari extension
 - [ ] Progressive Web App (mobile)
-- [ ] Application desktop (Electron)
+- [ ] Desktop application (Electron)
 
 ### Phase 4 - Infrastructure
 
 #### 🔄 TURN Servers
-- [ ] Support TURN pour NAT traversal
-- [ ] Meilleure connectivité (99%+ success rate)
-- [ ] Fallback automatique
+- [ ] TURN support for NAT traversal
+- [ ] Better connectivity (99%+ success rate)
+- [ ] Automatic fallback
 
 #### 🔒 Encryption
 - [ ] End-to-end encryption (E2EE)
-- [ ] Vérification de clés
-- [ ] Messages chiffrés
+- [ ] Key verification
+- [ ] Encrypted messages
 
 #### 📡 Advanced WebRTC
-- [ ] Simulcast pour économiser la bande passante
+- [ ] Simulcast to save bandwidth
 - [ ] Noise cancellation
 - [ ] Echo cancellation
 - [ ] Automatic gain control
 
 #### ⚡ Performance
-- [ ] Optimisation pour 50+ utilisateurs par room
-- [ ] Serveur CDN pour la distribution
+- [ ] Optimization for 50+ users per room
+- [ ] CDN server for distribution
 - [ ] Edge computing
 - [ ] Load balancing
 
 ### Phase 5 - Social & Community
 
 #### 👥 Social Features
-- [ ] Profils utilisateurs
-- [ ] Système d'amis
-- [ ] Notifications de connexion
-- [ ] Salons privés
+- [ ] User profiles
+- [ ] Friends system
+- [ ] Connection notifications
+- [ ] Private rooms
 
 #### 🏆 Gamification
-- [ ] Badges et achievements
+- [ ] Badges and achievements
 - [ ] Leaderboards
-- [ ] Niveaux basés sur l'activité
-- [ ] Rewards en tokens
+- [ ] Activity-based levels
+- [ ] Token rewards
 
 #### 🎨 Customization
-- [ ] Thèmes personnalisés
-- [ ] Position du widget configurable
-- [ ] Taille du widget ajustable
+- [ ] Custom themes
+- [ ] Configurable widget position
+- [ ] Adjustable widget size
 - [ ] Dark mode / Light mode
 
 #### 🌍 Internationalization
-- [ ] Support multilingue
-- [ ] Traduction automatique
-- [ ] Détection automatique de la langue
+- [ ] Multi-language support
+- [ ] Automatic translation
+- [ ] Automatic language detection
 
-### Phase 6 - Intégrations
+### Phase 6 - Integrations
 
 #### 🔗 DeFi Integration
-- [ ] Prix du token en temps réel
-- [ ] Graphiques de trading intégrés
-- [ ] Bouton "Buy" direct
-- [ ] Alertes de prix
+- [ ] Real-time token price
+- [ ] Integrated trading charts
+- [ ] Direct "Buy" button
+- [ ] Price alerts
 
 #### 🤖 Bots & AI
-- [ ] Bot de modération automatique
-- [ ] Détection de spam
-- [ ] Résumé automatique des conversations
-- [ ] Transcription audio vers texte
+- [ ] Automatic moderation bot
+- [ ] Spam detection
+- [ ] Automatic conversation summary
+- [ ] Audio to text transcription
 
 #### 📱 Notifications
 - [ ] Push notifications
 - [ ] Email alerts
 - [ ] Telegram/Discord webhooks
-- [ ] SMS (pour les events importants)
+- [ ] SMS (for important events)
 
-## 🎯 Features demandées par la communauté
+## 🎯 Community-Requested Features
 
-### Top requests
-1. **Screen sharing** - Partager son écran pour montrer des charts
-2. **Soundboard** - Effets sonores et sons customs
-3. **Spatial audio** - Audio 3D pour savoir qui parle
-4. **Video chat** - Mode vidéo optionnel
-5. **Polls** - Sondages en temps réel dans les rooms
+### Top Requests
+1. **Screen sharing** - Share your screen to show charts
+2. **Soundboard** - Sound effects and custom sounds
+3. **Spatial audio** - 3D audio to know who's speaking
+4. **Video chat** - Optional video mode
+5. **Polls** - Real-time polls in rooms
 
-### Nice to have
-- Whisper (messages privés audio)
-- Push-to-mute (inverse du push-to-talk)
+### Nice to Have
+- Whisper (private audio messages)
+- Push-to-mute (inverse of push-to-talk)
 - Volume normalization
 - Noise gate
-- Hotkeys customisables
-- Minimap des utilisateurs
+- Customizable hotkeys
+- User minimap
 - Status (away, busy, available)
-- Bio et description personnelle
+- Bio and personal description
 
-## 📊 Metrics de succès
+## 📊 Success Metrics
 
-### Objectifs v1.0
+### v1.0 Goals
 - [ ] 1,000 installations
-- [ ] 100 utilisateurs actifs quotidiens
-- [ ] 20+ rooms actives simultanément
+- [ ] 100 daily active users
+- [ ] 20+ simultaneously active rooms
 - [ ] < 1% error rate
-- [ ] 99% uptime du serveur
+- [ ] 99% server uptime
 
-### Objectifs v2.0
+### v2.0 Goals
 - [ ] 10,000 installations
-- [ ] 1,000 utilisateurs actifs quotidiens
-- [ ] 100+ rooms actives simultanément
+- [ ] 1,000 daily active users
+- [ ] 100+ simultaneously active rooms
 - [ ] < 0.1% error rate
 - [ ] 99.9% uptime
 
-## 🤝 Comment suggérer une fonctionnalité ?
+## 🤝 How to Suggest a Feature?
 
-1. Ouvrez une issue sur GitHub avec le tag `enhancement`
-2. Décrivez le cas d'usage
-3. Expliquez pourquoi ce serait utile
-4. Ajoutez des mockups si possible
+1. Open an issue on GitHub with the `enhancement` tag
+2. Describe the use case
+3. Explain why it would be useful
+4. Add mockups if possible
 
-Les features les plus demandées seront priorisées !
+The most requested features will be prioritized!
 
-## 🛠️ Features en développement
+## 🛠️ Features in Development
 
-Consultez [GitHub Projects](https://github.com/votre-repo/pumpspeak/projects) pour voir ce qui est en cours.
+Check [GitHub Projects](https://github.com/pumpspeak/pumpspeak/projects) to see what's in progress.
 
 ---
 
-**Note** : Cette roadmap est indicative et peut évoluer selon les retours de la communauté et les besoins du projet.
+**Note**: This roadmap is indicative and may evolve based on community feedback and project needs.

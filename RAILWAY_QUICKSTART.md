@@ -1,84 +1,83 @@
-# ⚡ Railway Déploiement - Quick Start
+# ⚡ Railway Deployment - Quick Start
 
-## 🚀 Déploiement en 5 minutes
+## 🚀 Deploy in 5 Minutes
 
-### 1️⃣ Push ton code sur GitHub
+### 1️⃣ Push Your Code to GitHub
 
 ```bash
 cd /Users/bassamchaouki/pumpspeak
 git init
 git add .
 git commit -m "Ready for deployment"
-git remote add origin https://github.com/TON_USERNAME/pumpspeak.git
+git remote add origin https://github.com/YOUR_USERNAME/pumpspeak.git
 git push -u origin main
 ```
 
-### 2️⃣ Déployer sur Railway
+### 2️⃣ Deploy on Railway
 
-1. **Va sur** → https://railway.app
-2. **Login avec GitHub**
-3. **Clique** → "New Project" → "Deploy from GitHub repo"
-4. **Sélectionne** → ton repo `pumpspeak`
-5. **Settings** → Root Directory → Entre `server` → Save
+1. **Go to** → https://railway.app
+2. **Login with GitHub**
+3. **Click** → "New Project" → "Deploy from GitHub repo"
+4. **Select** → your `pumpspeak` repo
+5. **Settings** → Root Directory → Enter `server` → Save
 
-### 3️⃣ Obtenir ton URL
+### 3️⃣ Get Your URL
 
 1. **Settings** → **Networking** → **Generate Domain**
-2. **Copie l'URL** : `https://ton-app.railway.app`
+2. **Copy the URL**: `https://your-app.railway.app`
 
-### 4️⃣ Mettre à jour l'extension
+### 4️⃣ Update the Extension
 
-Ouvre `config.js` et remplace :
+Open `config.js` and replace:
 
 ```javascript
 const PUMPSPEAK_CONFIG = {
-  WS_URL: 'wss://ton-app.railway.app',  // ⚠️ Utilise wss:// (pas ws://)
+  WS_URL: 'wss://your-app.railway.app',  // ⚠️ Use wss:// (not ws://)
 };
 ```
 
-### 5️⃣ Tester
+### 5️⃣ Test
 
-1. Recharge l'extension : `chrome://extensions/` → 🔄
-2. Va sur pump.fun
-3. Le widget devrait se connecter ! ✅
-
----
-
-## 🔍 Vérifier que ça marche
-
-- **Serveur** : Ouvre `https://ton-app.railway.app` → tu dois voir "PumpSpeak Signaling Server"
-- **Logs** : Railway → ton projet → Deployments → View Logs
-- **Console Chrome** : F12 → Console → cherche "PumpSpeak: Connected"
+1. Reload the extension: `chrome://extensions/` → 🔄
+2. Go to pump.fun
+3. The widget should connect! ✅
 
 ---
 
-## 💡 Astuces
+## 🔍 Verify It's Working
 
-### Voir les logs en temps réel
+- **Server**: Open `https://your-app.railway.app` → you should see "PumpSpeak Signaling Server"
+- **Logs**: Railway → your project → Deployments → View Logs
+- **Chrome Console**: F12 → Console → look for "PumpSpeak: Connected"
+
+---
+
+## 💡 Tips
+
+### View Real-Time Logs
 ```
-Railway Dashboard → ton projet → Deployments → View Logs
+Railway Dashboard → your project → Deployments → View Logs
 ```
 
-### Redéployer après un changement
+### Redeploy After Changes
 ```bash
 git add .
 git commit -m "Update"
 git push
 ```
-Railway redéploie automatiquement !
+Railway automatically redeploys!
 
-### Variables d'environnement
-Railway ajoute automatiquement `PORT`. Tu n'as rien à configurer ! 🎉
-
----
-
-## ⚠️ Points importants
-
-1. **Toujours utiliser `wss://`** (WebSocket Secure) en production
-2. **Root Directory doit être `server`** dans Railway Settings
-3. **Teste avant de publier** sur Chrome Web Store
+### Environment Variables
+Railway automatically adds `PORT`. You don't need to configure anything! 🎉
 
 ---
 
-Besoin d'aide ? Regarde `DEPLOYMENT_GUIDE.md` pour le guide complet !
+## ⚠️ Important Points
 
+1. **Always use `wss://`** (WebSocket Secure) in production
+2. **Root Directory must be `server`** in Railway Settings
+3. **Test before publishing** on Chrome Web Store
+
+---
+
+Need help? Check `DEPLOYMENT_GUIDE.md` for the complete guide!

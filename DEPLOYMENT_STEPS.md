@@ -1,44 +1,44 @@
-# 🚀 Étapes de Déploiement PumpSpeak
+# 🚀 PumpSpeak Deployment Steps
 
-## 📝 Checklist Avant de Commencer
+## 📝 Pre-Start Checklist
 
-- [ ] Nouveau compte GitHub créé OU organisation créée
-- [ ] Repository GitHub vide créé
-- [ ] Git configuré localement
+- [ ] New GitHub account created OR organization created
+- [ ] Empty GitHub repository created
+- [ ] Git configured locally
 
 ---
 
-## 1️⃣ Push le Code sur GitHub (3 min)
+## 1️⃣ Push Code to GitHub (3 min)
 
-### Si Git n'est pas encore initialisé :
+### If Git is not yet initialized:
 
 ```bash
 cd /Users/bassamchaouki/pumpspeak
 
-# Initialise git
+# Initialize git
 git init
 
-# Ajoute tous les fichiers
+# Add all files
 git add .
 
-# Premier commit
+# First commit
 git commit -m "PumpSpeak v1.0 - Production ready"
 
-# Ajoute le remote (remplace TON_USERNAME par ton nouveau compte/org)
-git remote add origin https://github.com/TON_USERNAME/pumpspeak.git
+# Add remote (replace YOUR_USERNAME with your new account/org)
+git remote add origin https://github.com/YOUR_USERNAME/pumpspeak.git
 
-# Crée la branche main et push
+# Create main branch and push
 git branch -M main
 git push -u origin main
 ```
 
-### Si tu as déjà des commits :
+### If you already have commits:
 
 ```bash
 cd /Users/bassamchaouki/pumpspeak
 
-# Ajoute juste le nouveau remote
-git remote add origin https://github.com/TON_USERNAME/pumpspeak.git
+# Just add the new remote
+git remote add origin https://github.com/YOUR_USERNAME/pumpspeak.git
 
 # Push
 git push -u origin main
@@ -46,56 +46,56 @@ git push -u origin main
 
 ---
 
-## 2️⃣ Déployer sur Railway (5 min)
+## 2️⃣ Deploy on Railway (5 min)
 
-### A. Créer le projet
+### A. Create the Project
 
-1. **Va sur** → https://railway.app
-2. **Clique** → "Login with GitHub"
-3. **Connecte-toi** avec ton nouveau compte GitHub (ou compte qui a l'organisation)
-4. **Autorise Railway** à accéder au repo
+1. **Go to** → https://railway.app
+2. **Click** → "Login with GitHub"
+3. **Sign in** with your new GitHub account (or account with the organization)
+4. **Authorize Railway** to access the repo
 
-### B. Déployer le serveur
+### B. Deploy the Server
 
-1. **Clique** → "New Project"
-2. **Sélectionne** → "Deploy from GitHub repo"
-3. **Choisis** → `pumpspeak` (ton repo)
-4. Railway va commencer le déploiement automatiquement
+1. **Click** → "New Project"
+2. **Select** → "Deploy from GitHub repo"
+3. **Choose** → `pumpspeak` (your repo)
+4. Railway will start deploying automatically
 
-### C. Configurer le Root Directory
+### C. Configure Root Directory
 
-⚠️ **IMPORTANT** : Railway doit savoir que le serveur est dans le dossier `server/`
+⚠️ **IMPORTANT**: Railway needs to know that the server is in the `server/` folder
 
-1. Clique sur le service déployé
-2. **Settings** → **General** → Scroll vers "Root Directory"
-3. Entre : `server`
+1. Click on the deployed service
+2. **Settings** → **General** → Scroll to "Root Directory"
+3. Enter: `server`
 4. **Save Changes**
-5. Railway va redéployer automatiquement
+5. Railway will automatically redeploy
 
-### D. Générer le domaine public
+### D. Generate Public Domain
 
-1. Dans ton projet → **Settings**
+1. In your project → **Settings**
 2. **Networking** → **Public Networking**
 3. **Generate Domain**
-4. Railway génère une URL comme : `pumpspeak-production-xxxx.up.railway.app`
-5. ✅ **COPIE CETTE URL !**
+4. Railway generates a URL like: `pumpspeak-production-xxxx.up.railway.app`
+5. ✅ **COPY THIS URL!**
 
-### E. Vérifier le déploiement
+### E. Verify Deployment
 
-1. **Ouvre l'URL** dans ton navigateur
-2. Tu devrais voir : **"PumpSpeak Signaling Server"**
-3. ✅ Le serveur est en ligne !
+1. **Open the URL** in your browser
+2. You should see: **"PumpSpeak Signaling Server"**
+3. ✅ The server is online!
 
-Pour voir les logs :
-- Railway Dashboard → ton projet → **Deployments** → **View Logs**
+To view logs:
+- Railway Dashboard → your project → **Deployments** → **View Logs**
 
 ---
 
-## 3️⃣ Mettre à jour l'Extension (2 min)
+## 3️⃣ Update the Extension (2 min)
 
-### A. Modifier config.js
+### A. Modify config.js
 
-Ouvre `config.js` et remplace l'URL :
+Open `config.js` and replace the URL:
 
 ```javascript
 // PumpSpeak Configuration
@@ -105,26 +105,26 @@ const PUMPSPEAK_CONFIG = {
 };
 ```
 
-⚠️ **Points critiques** :
-- ✅ Utilise `wss://` (WebSocket Secure) et NON `ws://`
-- ✅ N'oublie pas de remplacer par ton URL Railway exacte
-- ✅ Pas de `/` à la fin de l'URL
+⚠️ **Critical points**:
+- ✅ Use `wss://` (WebSocket Secure) NOT `ws://`
+- ✅ Don't forget to replace with your exact Railway URL
+- ✅ No trailing `/` at the end of the URL
 
-### B. Tester localement
+### B. Test Locally
 
-1. **Recharge l'extension** :
-   - Ouvre Chrome → `chrome://extensions/`
-   - Trouve PumpSpeak
-   - Clique sur 🔄 (reload)
+1. **Reload the extension**:
+   - Open Chrome → `chrome://extensions/`
+   - Find PumpSpeak
+   - Click 🔄 (reload)
 
-2. **Teste sur pump.fun** :
-   - Va sur n'importe quel coin
-   - Le widget devrait apparaître
-   - Ouvre la console (F12) :
-     - Tu devrais voir `PumpSpeak: Connected to signaling server`
-   - ✅ Ça marche !
+2. **Test on pump.fun**:
+   - Go to any coin
+   - The widget should appear
+   - Open console (F12):
+     - You should see `PumpSpeak: Connected to signaling server`
+   - ✅ It works!
 
-### C. Commit les changements
+### C. Commit the Changes
 
 ```bash
 cd /Users/bassamchaouki/pumpspeak
@@ -136,25 +136,25 @@ git push
 
 ---
 
-## 4️⃣ Préparer pour Chrome Web Store (Optional - Plus tard)
+## 4️⃣ Prepare for Chrome Web Store (Optional - Later)
 
-Tu peux faire ça plus tard, mais voici les assets nécessaires :
+You can do this later, but here are the necessary assets:
 
-### Assets requis :
+### Required Assets:
 
-1. **Icônes** ✅ (déjà fait)
+1. **Icons** ✅ (already done)
    - 16x16, 48x48, 128x128
 
-2. **Screenshots** (à faire)
-   - Taille : 1280x800 ou 640x400
-   - Nombre : 1 minimum, 5 maximum
-   - Contenu : Widget sur pump.fun, interface, utilisateurs
+2. **Screenshots** (to do)
+   - Size: 1280x800 or 640x400
+   - Number: 1 minimum, 5 maximum
+   - Content: Widget on pump.fun, interface, users
 
-3. **Description** ✅ (déjà préparée dans DEPLOYMENT_GUIDE.md)
+3. **Description** ✅ (already prepared in DEPLOYMENT_GUIDE.md)
 
-4. **Politique de confidentialité** (à créer)
-   - Peut être une page GitHub ou site simple
-   - Template disponible dans DEPLOYMENT_GUIDE.md
+4. **Privacy Policy** (to create)
+   - Can be a GitHub page or simple site
+   - Template available in DEPLOYMENT_GUIDE.md
 
 5. **Package .zip**
    ```bash
@@ -173,57 +173,56 @@ Tu peux faire ça plus tard, mais voici les assets nécessaires :
 
 ---
 
-## ✅ Vérification Finale
+## ✅ Final Verification
 
-Avant de publier, vérifie :
+Before publishing, check:
 
-- [ ] Serveur Railway fonctionne (URL accessible)
-- [ ] Extension connectée au serveur production
-- [ ] Testé sur plusieurs coins pump.fun
-- [ ] Testé avec plusieurs utilisateurs (ouvre plusieurs navigateurs)
-- [ ] Pas d'erreurs dans la console Chrome
-- [ ] WebRTC fonctionne (tu entends les autres utilisateurs)
+- [ ] Railway server working (URL accessible)
+- [ ] Extension connected to production server
+- [ ] Tested on multiple pump.fun coins
+- [ ] Tested with multiple users (open multiple browsers)
+- [ ] No errors in Chrome console
+- [ ] WebRTC working (you hear other users)
 
 ---
 
-## 🆘 En cas de problème
+## 🆘 Troubleshooting
 
-### Le widget ne se connecte pas
+### Widget doesn't connect
 
-1. **Console Chrome** (F12) :
-   - Cherche les erreurs WebSocket
-   - Vérifie que l'URL est correcte
+1. **Chrome Console** (F12):
+   - Look for WebSocket errors
+   - Verify the URL is correct
 
-2. **Railway Logs** :
+2. **Railway Logs**:
    - Dashboard → Deployments → View Logs
-   - Cherche "Nouvelle connexion WebSocket"
+   - Look for "New WebSocket connection"
 
-3. **Vérifications** :
-   - [ ] URL dans `config.js` utilise `wss://` (pas `ws://`)
-   - [ ] Root Directory = `server` dans Railway
-   - [ ] Extension rechargée après modification de config.js
+3. **Checks**:
+   - [ ] URL in `config.js` uses `wss://` (not `ws://`)
+   - [ ] Root Directory = `server` in Railway
+   - [ ] Extension reloaded after modifying config.js
 
-### Railway dit "Application Error"
+### Railway shows "Application Error"
 
-1. **Check les logs** → Railway Dashboard → View Logs
-2. **Vérifie** que `server/package.json` existe
-3. **Vérifie** que Root Directory = `server`
-4. **Redéploie** manuellement si besoin
-
----
-
-## 🎉 C'est fait !
-
-Ton extension est maintenant connectée à un serveur en production ! 
-
-**Prochaines étapes** :
-1. Teste avec des amis
-2. Prépare les screenshots
-3. Publie sur Chrome Web Store (quand prêt)
+1. **Check logs** → Railway Dashboard → View Logs
+2. **Verify** that `server/package.json` exists
+3. **Verify** that Root Directory = `server`
+4. **Redeploy** manually if needed
 
 ---
 
-**Besoin d'aide ?** Consulte :
-- `RAILWAY_QUICKSTART.md` - Guide rapide
-- `DEPLOYMENT_GUIDE.md` - Guide complet Chrome Web Store
+## 🎉 You're Done!
 
+Your extension is now connected to a production server!
+
+**Next steps**:
+1. Test with friends
+2. Prepare screenshots
+3. Publish on Chrome Web Store (when ready)
+
+---
+
+**Need help?** Consult:
+- `RAILWAY_QUICKSTART.md` - Quick guide
+- `DEPLOYMENT_GUIDE.md` - Complete Chrome Web Store guide
