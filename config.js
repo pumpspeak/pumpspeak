@@ -1,11 +1,11 @@
 // PumpSpeak Configuration
-// Change this URL after deploying to Railway
+// Production server on Railway
 
 const PUMPSPEAK_CONFIG = {
-  // Local development
-  // WS_URL: 'ws://localhost:8080',
+  // Production (Railway)
+  WS_URL: 'wss://pumpspeak-production.up.railway.app',
   
-  // Production (uncomment and replace with your Railway URL after deployment)
-  WS_URL: 'ws://localhost:8080', // TODO: Replace with wss://your-app.railway.app
+  // Local development (uncomment for testing locally)
+  // WS_URL: 'ws://localhost:8080',
 };
 

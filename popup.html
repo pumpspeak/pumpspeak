@@ -302,35 +302,18 @@
   </div>
 
   <div class="content">
-    <div id="status" class="status"></div>
-
     <div class="section">
-      <div class="section-title">Settings</div>
-      
-      <div class="setting">
-        <label for="server-url">Signaling Server</label>
-        <input type="url" id="server-url" placeholder="ws://localhost:8080">
-      </div>
-
-      <div class="setting">
-        <label class="toggle" for="auto-connect">
-          <span class="toggle-label">Auto-connect on page load</span>
-          <input type="checkbox" id="auto-connect" checked>
-          <div class="toggle-switch"></div>
-        </label>
-      </div>
+      <div class="section-title">Preferences</div>
 
       <div class="setting">
         <div class="slider-container">
           <div class="slider-label">
-            <span>Default Volume</span>
+            <span>Volume</span>
             <span class="slider-value"><span id="volume-value">100</span>%</span>
           </div>
           <input type="range" id="volume" min="0" max="100" value="100">
         </div>
       </div>
-
-      <button class="btn" id="save-btn">Save Settings</button>
     </div>
 
     <div class="section">

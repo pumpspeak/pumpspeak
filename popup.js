@@ -4,42 +4,32 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Load saved settings
   const settings = await loadSettings();
   
-  document.getElementById('server-url').value = settings.serverUrl || 'ws://localhost:8080';
-  document.getElementById('auto-connect').checked = settings.autoConnect !== false;
   document.getElementById('volume').value = settings.volume || 100;
   document.getElementById('volume-value').textContent = settings.volume || 100;
 
-  // Volume slider
-  document.getElementById('volume').addEventListener('input', (e) => {
-    document.getElementById('volume-value').textContent = e.target.value;
-  });
-
-  // Save button
-  document.getElementById('save-btn').addEventListener('click', async () => {
-    const newSettings = {
-      serverUrl: document.getElementById('server-url').value,
-      autoConnect: document.getElementById('auto-connect').checked,
-      volume: parseInt(document.getElementById('volume').value)
-    };
-
+  // Volume slider with auto-save
+  document.getElementById('volume').addEventListener('input', async (e) => {
+    const volume = parseInt(e.target.value);
+    document.getElementById('volume-value').textContent = volume;
+    
+    // Auto-save volume
     try {
-      await saveSettings(newSettings);
-      showStatus('Settings saved successfully!', 'success');
+      await saveSettings({ volume });
       
-      // Reload pump.fun tabs to apply changes
+      // Apply to all pump.fun tabs
       const tabs = await chrome.tabs.query({ url: 'https://pump.fun/*' });
       for (const tab of tabs) {
-        chrome.tabs.reload(tab.id);
+        chrome.tabs.sendMessage(tab.id, { type: 'updateVolume', volume }).catch(() => {});
       }
     } catch (error) {
-      showStatus('Error saving settings: ' + error.message, 'error');
+      console.error('Error saving volume:', error);
     }
   });
 });
 
 function loadSettings() {
   return new Promise((resolve) => {
-    chrome.storage.sync.get(['serverUrl', 'autoConnect', 'volume'], (result) => {
+    chrome.storage.sync.get(['volume'], (result) => {
       resolve(result);
     });
   });
@@ -55,14 +45,4 @@ function saveSettings(settings) {
       }
     });
   });
-}
-
-function showStatus(message, type) {
-  const statusEl = document.getElementById('status');
-  statusEl.textContent = message;
-  statusEl.className = `status ${type} show`;
-
-  setTimeout(() => {
-    statusEl.classList.remove('show');
-  }, 3000);
 }
