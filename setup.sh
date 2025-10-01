@@ -1,107 +1,107 @@
 #!/bin/bash
 
-# Script de setup automatique pour PumpSpeak
-# Ce script configure tout ce qui est nécessaire pour démarrer
+# Automatic setup script for PumpSpeak
+# This script configures everything needed to get started
 
 echo "╔════════════════════════════════════════╗"
 echo "║     🎙️  PumpSpeak Setup Script        ║"
 echo "╚════════════════════════════════════════╝"
 echo ""
 
-# Couleurs
+# Colors
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
-# Vérifier Node.js
-echo -e "${BLUE}[1/5]${NC} Vérification de Node.js..."
+# Check Node.js
+echo -e "${BLUE}[1/5]${NC} Checking Node.js..."
 if ! command -v node &> /dev/null; then
-    echo -e "${RED}❌ Node.js n'est pas installé${NC}"
-    echo "Installez Node.js depuis https://nodejs.org/"
+    echo -e "${RED}❌ Node.js is not installed${NC}"
+    echo "Install Node.js from https://nodejs.org/"
     exit 1
 fi
-echo -e "${GREEN}✅ Node.js $(node -v) détecté${NC}"
+echo -e "${GREEN}✅ Node.js $(node -v) detected${NC}"
 echo ""
 
-# Vérifier npm
-echo -e "${BLUE}[2/5]${NC} Vérification de npm..."
+# Check npm
+echo -e "${BLUE}[2/5]${NC} Checking npm..."
 if ! command -v npm &> /dev/null; then
-    echo -e "${RED}❌ npm n'est pas installé${NC}"
+    echo -e "${RED}❌ npm is not installed${NC}"
     exit 1
 fi
-echo -e "${GREEN}✅ npm $(npm -v) détecté${NC}"
+echo -e "${GREEN}✅ npm $(npm -v) detected${NC}"
 echo ""
 
-# Installer les dépendances du serveur
-echo -e "${BLUE}[3/5]${NC} Installation des dépendances du serveur..."
+# Install server dependencies
+echo -e "${BLUE}[3/5]${NC} Installing server dependencies..."
 cd server
 if npm install; then
-    echo -e "${GREEN}✅ Dépendances installées${NC}"
+    echo -e "${GREEN}✅ Dependencies installed${NC}"
 else
-    echo -e "${RED}❌ Erreur lors de l'installation${NC}"
+    echo -e "${RED}❌ Installation error${NC}"
     exit 1
 fi
 cd ..
 echo ""
 
-# Créer le dossier icons si nécessaire
-echo -e "${BLUE}[4/5]${NC} Vérification des icônes..."
+# Create icons folder if needed
+echo -e "${BLUE}[4/5]${NC} Checking icons..."
 mkdir -p icons
 
 if [ ! -f "icons/icon16.png" ] || [ ! -f "icons/icon48.png" ] || [ ! -f "icons/icon128.png" ]; then
-    echo -e "${BLUE}⚠️  Icônes manquantes${NC}"
-    echo "Ouvrez create-icons.html dans votre navigateur pour les générer :"
+    echo -e "${BLUE}⚠️  Missing icons${NC}"
+    echo "Open create-icons.html in your browser to generate them:"
     echo "  open create-icons.html"
     echo ""
     
-    # Créer des icônes placeholder simples avec ImageMagick si disponible
+    # Create simple placeholder icons with ImageMagick if available
     if command -v convert &> /dev/null; then
-        echo "Génération d'icônes placeholder avec ImageMagick..."
+        echo "Generating placeholder icons with ImageMagick..."
         convert -size 16x16 xc:#667eea icons/icon16.png 2>/dev/null
         convert -size 48x48 xc:#667eea icons/icon48.png 2>/dev/null
         convert -size 128x128 xc:#667eea icons/icon128.png 2>/dev/null
-        echo -e "${GREEN}✅ Icônes placeholder créées${NC}"
+        echo -e "${GREEN}✅ Placeholder icons created${NC}"
     else
-        echo -e "${BLUE}ℹ️  ImageMagick n'est pas installé. Utilisez create-icons.html${NC}"
+        echo -e "${BLUE}ℹ️  ImageMagick is not installed. Use create-icons.html${NC}"
     fi
 else
-    echo -e "${GREEN}✅ Icônes présentes${NC}"
+    echo -e "${GREEN}✅ Icons present${NC}"
 fi
 echo ""
 
-# Créer fichier de config
+# Create config file
 echo -e "${BLUE}[5/5]${NC} Configuration..."
 if [ ! -f "server/config.js" ]; then
     if [ -f "server/config.example.js" ]; then
         cp server/config.example.js server/config.js
-        echo -e "${GREEN}✅ Fichier config.js créé${NC}"
+        echo -e "${GREEN}✅ config.js file created${NC}"
     fi
 fi
 echo ""
 
-# Récapitulatif
+# Summary
 echo "╔════════════════════════════════════════╗"
-echo "║         ✅ Setup terminé !             ║"
+echo "║         ✅ Setup Complete!             ║"
 echo "╚════════════════════════════════════════╝"
 echo ""
-echo "📋 Prochaines étapes :"
+echo "📋 Next steps:"
 echo ""
-echo "1️⃣  Démarrer le serveur :"
+echo "1️⃣  Start the server:"
 echo "   ${GREEN}cd server && npm start${NC}"
 echo ""
-echo "2️⃣  Charger l'extension dans Chrome :"
-echo "   • Ouvrez ${BLUE}chrome://extensions/${NC}"
-echo "   • Activez le 'Mode développeur'"
-echo "   • Cliquez 'Charger l'extension non empaquetée'"
-echo "   • Sélectionnez le dossier ${BLUE}$(pwd)${NC}"
+echo "2️⃣  Load the extension in Chrome:"
+echo "   • Open ${BLUE}chrome://extensions/${NC}"
+echo "   • Enable 'Developer mode'"
+echo "   • Click 'Load unpacked extension'"
+echo "   • Select folder ${BLUE}$(pwd)${NC}"
 echo ""
-echo "3️⃣  Testez sur pump.fun :"
+echo "3️⃣  Test on pump.fun:"
 echo "   ${BLUE}https://pump.fun${NC}"
 echo ""
-echo "📚 Documentation :"
-echo "   • Guide rapide : ${BLUE}QUICK_START.md${NC}"
-echo "   • Documentation : ${BLUE}README.md${NC}"
-echo "   • Déploiement : ${BLUE}DEPLOYMENT.md${NC}"
+echo "📚 Documentation:"
+echo "   • Quick start: ${BLUE}QUICK_START.md${NC}"
+echo "   • Documentation: ${BLUE}README.md${NC}"
+echo "   • Deployment: ${BLUE}DEPLOYMENT_GUIDE.md${NC}"
 echo ""
-echo "Bonne utilisation ! 🎉"
+echo "Happy building! 🎉"
