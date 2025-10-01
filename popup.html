@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PumpSpeak</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 360px;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+      background: #000;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 32px 24px 24px;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2));
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header p {
+      font-size: 14px;
+      opacity: 0.6;
+      font-weight: 400;
+    }
+
+    .content {
+      padding: 24px;
+    }
+
+    .section {
+      margin-bottom: 28px;
+    }
+
+    .section:last-child {
+      margin-bottom: 0;
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      opacity: 0.5;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+
+    .setting {
+      margin-bottom: 16px;
+    }
+
+    .setting:last-child {
+      margin-bottom: 0;
+    }
+
+    .setting label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 8px;
+      font-weight: 500;
+      opacity: 0.9;
+    }
+
+    .setting input[type="url"] {
+      width: 100%;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      font-size: 13px;
+      color: #fff;
+      font-family: 'SF Mono', Monaco, monospace;
+      transition: all 0.2s;
+    }
+
+    .setting input[type="url"]:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(99, 102, 241, 0.5);
+    }
+
+    .toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .toggle:hover {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .toggle-label {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .toggle-switch {
+      width: 44px;
+      height: 26px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 13px;
+      position: relative;
+      transition: background 0.3s;
+    }
+
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 22px;
+      height: 22px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    input[type="checkbox"]:checked + .toggle-switch {
+      background: #34C759;
+    }
+
+    input[type="checkbox"]:checked + .toggle-switch::after {
+      transform: translateX(18px);
+    }
+
+    input[type="checkbox"] {
+      display: none;
+    }
+
+    .slider-container {
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 10px;
+    }
+
+    .slider-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .slider-value {
+      color: #6366F1;
+      font-weight: 600;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.15);
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #6366F1;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #6366F1, #A855F7);
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 8px;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .status {
+      text-align: center;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 16px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .status.show {
+      opacity: 1;
+    }
+
+    .status.success {
+      background: rgba(52, 199, 89, 0.15);
+      border: 1px solid rgba(52, 199, 89, 0.3);
+      color: #34C759;
+    }
+
+    .status.error {
+      background: rgba(255, 59, 48, 0.15);
+      border: 1px solid rgba(255, 59, 48, 0.3);
+      color: #FF3B30;
+    }
+
+    .info {
+      font-size: 12px;
+      line-height: 1.6;
+      opacity: 0.6;
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 10px;
+    }
+
+    .shortcuts {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .shortcut {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 8px;
+      font-size: 13px;
+    }
+
+    .shortcut kbd {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-family: 'SF Mono', Monaco, monospace;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .version {
+      text-align: center;
+      padding: 20px;
+      font-size: 12px;
+      opacity: 0.4;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+        <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+        <line x1="12" y1="19" x2="12" y2="23"></line>
+        <line x1="8" y1="23" x2="16" y2="23"></line>
+      </svg>
+      PumpSpeak
+    </h1>
+    <p>Voice chat for pump.fun</p>
+  </div>
+
+  <div class="content">
+    <div id="status" class="status"></div>
+
+    <div class="section">
+      <div class="section-title">Settings</div>
+      
+      <div class="setting">
+        <label for="server-url">Signaling Server</label>
+        <input type="url" id="server-url" placeholder="ws://localhost:8080">
+      </div>
+
+      <div class="setting">
+        <label class="toggle" for="auto-connect">
+          <span class="toggle-label">Auto-connect on page load</span>
+          <input type="checkbox" id="auto-connect" checked>
+          <div class="toggle-switch"></div>
+        </label>
+      </div>
+
+      <div class="setting">
+        <div class="slider-container">
+          <div class="slider-label">
+            <span>Default Volume</span>
+            <span class="slider-value"><span id="volume-value">100</span>%</span>
+          </div>
+          <input type="range" id="volume" min="0" max="100" value="100">
+        </div>
+      </div>
+
+      <button class="btn" id="save-btn">Save Settings</button>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Keyboard Shortcuts</div>
+      <div class="shortcuts">
+        <div class="shortcut">
+          <span>Push-to-talk</span>
+          <kbd>SPACE</kbd>
+        </div>
+        <div class="shortcut">
+          <span>Minimize widget</span>
+          <kbd>Click header</kbd>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">How to use</div>
+      <div class="info">
+        1. Visit any coin page on pump.fun<br>
+        2. Widget appears automatically<br>
+        3. Hold SPACE to talk with other holders<br>
+        4. Switch coins to change rooms instantly
+      </div>
+    </div>
+  </div>
+
+  <div class="version">PumpSpeak v1.0.0</div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
