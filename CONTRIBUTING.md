@@ -1,4 +1,4 @@
-# 🤝 Contributing to PumpSpeak
+# 🤝 Contributing to PumpSpeakokr
 
 Thank you for your interest in contributing to PumpSpeak! This guide will help you get started.
 

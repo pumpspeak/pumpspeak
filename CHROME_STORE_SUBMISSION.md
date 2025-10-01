@@ -58,9 +58,6 @@ Connect and communicate with other holders in real-time while browsing pump.fun 
 • Push-to-Talk
   Hold SPACE bar or click & hold to speak. Simple, clean, no setup required.
 
-• Apple-Style Design
-  Beautiful glassmorphism UI that blends seamlessly with pump.fun.
-
 • Real-Time User List
   See who's in the room and who's speaking with visual indicators.
 
