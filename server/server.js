@@ -1,48 +1,48 @@
-// Serveur signaling pour PumpSpeak
-// Ce serveur coordonne les connexions WebRTC entre les utilisateurs
+// PumpSpeak Signaling Server
+// This server coordinates WebRTC connections between users
 
 const WebSocket = require('ws');
 const http = require('http');
 
 const PORT = process.env.PORT || 8080;
 
-// Structure pour stocker les rooms et les utilisateurs
-const rooms = new Map(); // roomId -> Set de clients
+// Data structures for storing rooms and users
+const rooms = new Map(); // roomId -> Set of clients
 const clients = new Map(); // ws -> { userId, roomId }
 
-// Créer le serveur HTTP
+// Create HTTP server
 const server = http.createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/plain' });
   res.end('PumpSpeak Signaling Server\n');
 });
 
-// Créer le serveur WebSocket
+// Create WebSocket server
 const wss = new WebSocket.Server({ server });
 
 wss.on('connection', (ws) => {
-  console.log('Nouvelle connexion WebSocket');
+  console.log('New WebSocket connection');
 
   ws.on('message', (data) => {
     try {
       const message = JSON.parse(data);
       handleMessage(ws, message);
     } catch (error) {
-      console.error('Erreur de parsing du message:', error);
+      console.error('Message parsing error:', error);
     }
   });
 
   ws.on('close', () => {
-    console.log('Connexion fermée');
+    console.log('Connection closed');
     handleDisconnect(ws);
   });
 
   ws.on('error', (error) => {
-    console.error('Erreur WebSocket:', error);
+    console.error('WebSocket error:', error);
   });
 });
 
 function handleMessage(ws, message) {
-  console.log('Message reçu:', message.type, 'de', message.userId || 'inconnu');
+  console.log('Message received:', message.type, 'from', message.userId || 'unknown');
 
   switch (message.type) {
     case 'join':
@@ -57,29 +57,29 @@ function handleMessage(ws, message) {
       handleSignaling(ws, message);
       break;
     default:
-      console.log('Type de message inconnu:', message.type);
+      console.log('Unknown message type:', message.type);
   }
 }
 
 function handleJoin(ws, message) {
   const { roomId, userId } = message;
   
-  console.log(`Utilisateur ${userId} rejoint la room ${roomId}`);
+  console.log(`User ${userId} joining room ${roomId}`);
 
-  // Si l'utilisateur était déjà dans une room, le retirer
+  // If the user was already in a room, remove them
   const existingClient = clients.get(ws);
   if (existingClient) {
     handleLeave(ws, { roomId: existingClient.roomId, userId: existingClient.userId });
   }
 
-  // Ajouter l'utilisateur à la room
+  // Add the user to the room
   if (!rooms.has(roomId)) {
     rooms.set(roomId, new Set());
   }
   
   const room = rooms.get(roomId);
   
-  // Notifier les autres utilisateurs de la room
+  // Notify other users in the room
   const joinMessage = JSON.stringify({
     type: 'user-joined',
     userId: userId,
@@ -92,11 +92,11 @@ function handleJoin(ws, message) {
     }
   });
 
-  // Ajouter le nouveau client à la room
+  // Add the new client to the room
   room.add(ws);
   clients.set(ws, { userId, roomId });
 
-  // Envoyer la liste des utilisateurs au nouveau client
+  // Send the list of users to the new client
   const usersList = Array.from(room).map(client => {
     const clientData = clients.get(client);
     return clientData ? clientData.userId : null;
@@ -108,19 +108,19 @@ function handleJoin(ws, message) {
     roomId: roomId
   }));
 
-  console.log(`Room ${roomId} a maintenant ${room.size} utilisateur(s)`);
+  console.log(`Room ${roomId} now has ${room.size} user(s)`);
 }
 
 function handleLeave(ws, message) {
   const { roomId, userId } = message;
   
-  console.log(`Utilisateur ${userId} quitte la room ${roomId}`);
+  console.log(`User ${userId} leaving room ${roomId}`);
 
   const room = rooms.get(roomId);
   if (room) {
     room.delete(ws);
 
-    // Notifier les autres utilisateurs
+    // Notify other users
     const leaveMessage = JSON.stringify({
       type: 'user-left',
       userId: userId,
@@ -133,12 +133,12 @@ function handleLeave(ws, message) {
       }
     });
 
-    // Supprimer la room si elle est vide
+    // Remove the room if it's empty
     if (room.size === 0) {
       rooms.delete(roomId);
-      console.log(`Room ${roomId} supprimée (vide)`);
+      console.log(`Room ${roomId} deleted (empty)`);
     } else {
-      console.log(`Room ${roomId} a maintenant ${room.size} utilisateur(s)`);
+      console.log(`Room ${roomId} now has ${room.size} user(s)`);
     }
   }
 
@@ -148,7 +148,7 @@ function handleLeave(ws, message) {
 function handleSignaling(ws, message) {
   const { to, from, type } = message;
   
-  // Trouver le destinataire
+  // Find the recipient
   let targetWs = null;
   for (const [client, data] of clients.entries()) {
     if (data.userId === to) {
@@ -158,11 +158,11 @@ function handleSignaling(ws, message) {
   }
 
   if (targetWs && targetWs.readyState === WebSocket.OPEN) {
-    // Transférer le message au destinataire
+    // Forward the message to the recipient
     targetWs.send(JSON.stringify(message));
-    console.log(`Message ${type} transféré de ${from} à ${to}`);
+    console.log(`Message ${type} forwarded from ${from} to ${to}`);
   } else {
-    console.log(`Destinataire ${to} non trouvé ou déconnecté`);
+    console.log(`Recipient ${to} not found or disconnected`);
   }
 }
 
@@ -175,7 +175,7 @@ function handleDisconnect(ws) {
   }
 }
 
-// Démarrer le serveur
+// Start the server
 server.listen(PORT, () => {
   console.log(`
 ╔════════════════════════════════════════╗
@@ -186,30 +186,30 @@ server.listen(PORT, () => {
   `);
 });
 
-// Gestion de l'arrêt propre
+// Graceful shutdown handling
 process.on('SIGINT', () => {
-  console.log('\nArrêt du serveur...');
+  console.log('\nShutting down server...');
   
-  // Fermer toutes les connexions
+  // Close all connections
   wss.clients.forEach(client => {
     client.close();
   });
   
   server.close(() => {
-    console.log('Serveur arrêté');
+    console.log('Server stopped');
     process.exit(0);
   });
 });
 
-// Log des statistiques toutes les 30 secondes
+// Log statistics every 30 seconds
 setInterval(() => {
-  console.log(`Stats: ${clients.size} clients connectés, ${rooms.size} rooms actives`);
+  console.log(`Stats: ${clients.size} clients connected, ${rooms.size} active rooms`);
   
-  // Afficher le détail des rooms
+  // Display room details
   if (rooms.size > 0) {
     rooms.forEach((room, roomId) => {
       const roomName = roomId.substring(0, 12) + '...';
-      console.log(`  - Room ${roomName}: ${room.size} utilisateur(s)`);
+      console.log(`  - Room ${roomName}: ${room.size} user(s)`);
     });
   }
 }, 30000);

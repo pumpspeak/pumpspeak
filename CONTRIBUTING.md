@@ -1,49 +1,49 @@
 # 🤝 Contributing to PumpSpeak
 
-Merci de votre intérêt pour contribuer à PumpSpeak ! Ce guide vous aidera à démarrer.
+Thank you for your interest in contributing to PumpSpeak! This guide will help you get started.
 
-## 📋 Table des matières
+## 📋 Table of Contents
 
 - [Code of Conduct](#code-of-conduct)
-- [Comment contribuer](#comment-contribuer)
-- [Setup du projet](#setup-du-projet)
+- [How to Contribute](#how-to-contribute)
+- [Project Setup](#project-setup)
 - [Architecture](#architecture)
-- [Guidelines de code](#guidelines-de-code)
-- [Process de Pull Request](#process-de-pull-request)
+- [Code Guidelines](#code-guidelines)
+- [Pull Request Process](#pull-request-process)
 
 ## Code of Conduct
 
-Ce projet adhère à un code de conduite. En participant, vous vous engagez à respecter ce code.
+This project adheres to a code of conduct. By participating, you agree to uphold this code.
 
-## Comment contribuer
+## How to Contribute
 
-Il y a plusieurs façons de contribuer à PumpSpeak :
+There are several ways to contribute to PumpSpeak:
 
-### 🐛 Rapporter des bugs
+### 🐛 Report Bugs
 
-- Utilisez les GitHub Issues
-- Vérifiez que le bug n'a pas déjà été reporté
-- Incluez les étapes pour reproduire
-- Ajoutez des screenshots si pertinent
-- Mentionnez votre navigateur et OS
+- Use GitHub Issues
+- Check that the bug hasn't already been reported
+- Include steps to reproduce
+- Add screenshots if relevant
+- Mention your browser and OS
 
-### 💡 Proposer des fonctionnalités
+### 💡 Suggest Features
 
-- Ouvrez une issue avec le tag `enhancement`
-- Décrivez le cas d'usage
-- Expliquez pourquoi cette feature serait utile
+- Open an issue with the `enhancement` tag
+- Describe the use case
+- Explain why this feature would be useful
 
-### 🔧 Soumettre des changements
+### 🔧 Submit Changes
 
-1. Fork le repo
-2. Créez une branche (`git checkout -b feature/AmazingFeature`)
-3. Committez vos changements (`git commit -m 'Add some AmazingFeature'`)
-4. Pushez sur la branche (`git push origin feature/AmazingFeature`)
-5. Ouvrez une Pull Request
+1. Fork the repo
+2. Create a branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## Setup du projet
+## Project Setup
 
-### Prérequis
+### Prerequisites
 
 - Node.js 14+
 - Chrome/Chromium
@@ -52,70 +52,70 @@ Il y a plusieurs façons de contribuer à PumpSpeak :
 ### Installation
 
 ```bash
-# Cloner le repo
-git clone https://github.com/votre-user/pumpspeak.git
+# Clone the repo
+git clone https://github.com/pumpspeak/pumpspeak.git
 cd pumpspeak
 
-# Installer les dépendances du serveur
+# Install server dependencies
 cd server
 npm install
 
-# Retourner à la racine
+# Return to root
 cd ..
 ```
 
-### Lancer en dev
+### Running in Development
 
 ```bash
-# Terminal 1 : Serveur
+# Terminal 1: Server
 cd server
 npm run dev
 
-# Charger l'extension dans Chrome
-# chrome://extensions/ > Mode développeur > Charger l'extension non empaquetée
+# Load the extension in Chrome
+# chrome://extensions/ > Developer mode > Load unpacked extension
 ```
 
 ## Architecture
 
-### Structure du projet
+### Project Structure
 
 ```
 pumpspeak/
-├── manifest.json          # Config Chrome Extension
-├── content.js            # Script injecté dans pump.fun
-│   ├── PumpSpeakWidget   # Classe du widget UI
-│   └── VoiceClient       # Client WebRTC
+├── manifest.json          # Chrome Extension config
+├── content.js            # Script injected into pump.fun
+│   ├── PumpSpeakWidget   # Widget UI class
+│   └── VoiceClient       # WebRTC client
 ├── background.js         # Service Worker
-├── popup.html/js         # Interface paramètres
+├── popup.html/js         # Settings interface
 ├── widget.css           # Styles
 └── server/
-    └── server.js        # Serveur signaling WebSocket
+    └── server.js        # WebSocket signaling server
 ```
 
-### Flow de données
+### Data Flow
 
-1. **Detection** : `content.js` détecte l'URL pump.fun et extrait le coin ID
-2. **UI** : Le widget s'affiche avec les contrôles
-3. **Connection** : WebSocket vers le serveur signaling
-4. **Signaling** : Échange d'offres/réponses SDP via le serveur
-5. **WebRTC** : Connexions P2P directes pour l'audio
+1. **Detection**: `content.js` detects pump.fun URL and extracts coin ID
+2. **UI**: Widget displays with controls
+3. **Connection**: WebSocket to signaling server
+4. **Signaling**: Exchange of SDP offers/answers via server
+5. **WebRTC**: Direct P2P connections for audio
 
-## Guidelines de code
+## Code Guidelines
 
 ### JavaScript
 
-- Utilisez ES6+ (const/let, arrow functions, async/await)
-- Commentez les fonctions complexes
-- Nommage en camelCase
-- Classes en PascalCase
+- Use ES6+ (const/let, arrow functions, async/await)
+- Comment complex functions
+- camelCase naming
+- PascalCase for classes
 
 ```javascript
-// ✅ Bon
+// ✅ Good
 const userName = 'Alice';
 async function connectToRoom(roomId) { ... }
 class VoiceClient { ... }
 
-// ❌ Mauvais
+// ❌ Bad
 var user_name = 'Alice';
 function connect_to_room(room_id) { ... }
 class voiceClient { ... }
@@ -123,17 +123,17 @@ class voiceClient { ... }
 
 ### CSS
 
-- BEM naming pour les classes
-- Préfixe `ps-` pour éviter les conflits
-- Variables CSS pour les couleurs
+- BEM naming for classes
+- `ps-` prefix to avoid conflicts
+- CSS variables for colors
 
 ```css
-/* ✅ Bon */
+/* ✅ Good */
 .ps-widget { }
 .ps-widget__header { }
 .ps-widget__header--collapsed { }
 
-/* ❌ Mauvais */
+/* ❌ Bad */
 .widget { }
 .header { }
 .collapsed { }
@@ -141,115 +141,115 @@ class voiceClient { ... }
 
 ### Git
 
-- Commits descriptifs en anglais
-- Format : `type: description`
-- Types : `feat`, `fix`, `docs`, `style`, `refactor`, `test`
+- Descriptive commits in English
+- Format: `type: description`
+- Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`
 
 ```bash
-# ✅ Bon
+# ✅ Good
 git commit -m "feat: add push-to-talk mode"
 git commit -m "fix: widget not showing on some pages"
 git commit -m "docs: update README with deployment steps"
 
-# ❌ Mauvais
+# ❌ Bad
 git commit -m "update"
 git commit -m "fix bug"
 git commit -m "changes"
 ```
 
-## Process de Pull Request
+## Pull Request Process
 
-### Checklist avant de soumettre
+### Checklist Before Submitting
 
-- [ ] Le code fonctionne localement
-- [ ] Testé sur Chrome (dernière version)
-- [ ] Aucune erreur dans la console
-- [ ] Code commenté si complexe
-- [ ] README mis à jour si nécessaire
-- [ ] Pas de `console.log` inutiles
+- [ ] Code works locally
+- [ ] Tested on Chrome (latest version)
+- [ ] No errors in console
+- [ ] Code commented if complex
+- [ ] README updated if necessary
+- [ ] No unnecessary `console.log` statements
 
-### Template de PR
+### PR Template
 
 ```markdown
 ## Description
-Décrivez vos changements
+Describe your changes
 
-## Type de changement
+## Type of Change
 - [ ] Bug fix
 - [ ] New feature
 - [ ] Breaking change
 - [ ] Documentation update
 
-## Comment tester
-1. Étape 1
-2. Étape 2
+## How to Test
+1. Step 1
+2. Step 2
 3. ...
 
-## Screenshots (si applicable)
-[Ajoutez des images]
+## Screenshots (if applicable)
+[Add images]
 
 ## Checklist
-- [ ] Code testé
-- [ ] Documentation à jour
-- [ ] Pas de warnings
+- [ ] Code tested
+- [ ] Documentation up to date
+- [ ] No warnings
 ```
 
-### Review process
+### Review Process
 
-1. Un mainteneur reviewera votre PR
-2. Des changements peuvent être demandés
-3. Une fois approuvée, la PR sera merged
-4. Votre contribution apparaîtra dans la prochaine release !
+1. A maintainer will review your PR
+2. Changes may be requested
+3. Once approved, the PR will be merged
+4. Your contribution will appear in the next release!
 
-## Zones de contribution
+## Areas of Contribution
 
 ### 🎨 Frontend / UI
 
-- Améliorer le design du widget
-- Animations et transitions
-- Accessibilité (ARIA, keyboard navigation)
-- Thèmes (dark mode, custom colors)
+- Improve widget design
+- Animations and transitions
+- Accessibility (ARIA, keyboard navigation)
+- Themes (dark mode, custom colors)
 
 ### 🔧 Backend / Infrastructure
 
-- Optimisation du serveur signaling
+- Optimize signaling server
 - Support TURN servers
-- Metrics et monitoring
+- Metrics and monitoring
 - Rate limiting
 
-### 🚀 Fonctionnalités
+### 🚀 Features
 
-- Authentification wallet
-- Vérification holder
-- Chat texte
-- Enregistrement audio
-- Modération
+- Wallet authentication
+- Holder verification
+- Text chat
+- Audio recording
+- Moderation
 
 ### 📚 Documentation
 
-- Tutoriels
-- Vidéos
-- Traductions
+- Tutorials
+- Videos
+- Translations
 - API docs
 
 ### 🧪 Testing
 
-- Tests unitaires
-- Tests d'intégration
-- Tests de charge
-- Tests multi-navigateurs
+- Unit tests
+- Integration tests
+- Load tests
+- Multi-browser tests
 
-## Questions ?
+## Questions?
 
-- Ouvrez une issue avec le tag `question`
-- Rejoignez notre Discord (lien dans README)
-- Contactez les mainteneurs
+- Open an issue with the `question` tag
+- Join our Discord (link in README)
+- Contact the maintainers
 
-## Reconnaissance
+## Recognition
 
-Les contributeurs sont listés dans :
+Contributors are listed in:
 - [CONTRIBUTORS.md](CONTRIBUTORS.md)
-- Page About de l'extension
+- Extension About page
 - Release notes
 
-Merci de contribuer à PumpSpeak ! 🎙️
+Thank you for contributing to PumpSpeak! 🎙️

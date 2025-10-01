@@ -1,18 +1,18 @@
-// Configuration du serveur PumpSpeak
-// Copiez ce fichier en config.js et ajustez les valeurs
+// PumpSpeak Server Configuration
+// Copy this file to config.js and adjust the values
 
 module.exports = {
-  // Port du serveur WebSocket
+  // WebSocket server port
   port: process.env.PORT || 8080,
 
-  // Environnement
+  // Environment
   env: process.env.NODE_ENV || 'development',
 
-  // CORS - Origins autorisés
+  // CORS - Allowed origins
   corsOrigins: [
     'https://pump.fun',
     'https://www.pump.fun',
-    // Ajoutez d'autres domaines si nécessaire
+    // Add other domains if needed
   ],
 
   // Logs
@@ -21,19 +21,19 @@ module.exports = {
   // Rate Limiting
   rateLimit: {
     windowMs: 15 * 60 * 1000, // 15 minutes
-    maxRequests: 100, // max par IP
+    maxRequests: 100, // max per IP
   },
 
   // WebRTC Configuration
   webrtc: {
-    // Serveurs STUN publics (gratuits)
+    // Public STUN servers (free)
     stunServers: [
       'stun:stun.l.google.com:19302',
       'stun:stun1.l.google.com:19302',
     ],
     
-    // Serveurs TURN (optionnel, pour NAT traversal)
-    // Décommenter et configurer si nécessaire
+    // TURN servers (optional, for NAT traversal)
+    // Uncomment and configure if needed
     // turnServers: [
     //   {
     //     urls: 'turn:your-turn-server.com:3478',
@@ -43,22 +43,22 @@ module.exports = {
     // ],
   },
 
-  // Limites
+  // Limits
   limits: {
     maxUsersPerRoom: 50,
     maxRooms: 1000,
     messageSize: 10000, // bytes
   },
 
-  // Sécurité
+  // Security
   security: {
-    // Activer la vérification d'origine
+    // Enable origin verification
     checkOrigin: true,
     
-    // Timeout de connexion
-    connectionTimeout: 30000, // 30 secondes
+    // Connection timeout
+    connectionTimeout: 30000, // 30 seconds
     
-    // Heartbeat pour garder les connexions vivantes
+    // Heartbeat to keep connections alive
     heartbeatInterval: 30000,
   },
 };
