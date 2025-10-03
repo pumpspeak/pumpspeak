@@ -193,10 +193,8 @@ Required to detect when the user is on a pump.fun token page and to inject the v
 Used to save user preferences (volume level) locally in the browser.
 ```
 
-#### `scripting`
-```
-Necessary to inject the voice chat widget into pump.fun pages.
-```
+~~#### `scripting`~~ ❌ REMOVED
+~~Not needed - content_scripts are used instead for automatic injection~~
 
 #### `host_permissions` (pump.fun)
 ```
