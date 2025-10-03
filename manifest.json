@@ -1,12 +1,11 @@
 {
   "manifest_version": 3,
   "name": "PumpSpeak",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Voice chat for pump.fun token holders",
   "permissions": [
     "activeTab",
-    "storage",
-    "scripting"
+    "storage"
   ],
   "host_permissions": [
     "https://pump.fun/*"
