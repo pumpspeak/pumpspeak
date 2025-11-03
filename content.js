@@ -390,7 +390,7 @@ class VoiceClient {
     this.isMicEnabled = false;
     this.isTalking = false;
     this.volume = 1.0;
-    this.userId = 'user_' + Math.random().toString(36).substr(2, 9);
+    this.userId = null; // Will be loaded from storage
     
     // Auto-update users list every 500ms
     this.updateInterval = setInterval(() => {
@@ -398,7 +398,27 @@ class VoiceClient {
     }, 500);
   }
 
+  async getOrCreateUserId() {
+    // Get persistent userId from chrome.storage (shared across all tabs)
+    const result = await chrome.storage.local.get(['userId']);
+    
+    if (result.userId) {
+      this.userId = result.userId;
+      console.log('PumpSpeak: Using existing userId:', this.userId);
+    } else {
+      // Create new userId and save it (for backward compatibility)
+      this.userId = 'user_' + Math.random().toString(36).substr(2, 9);
+      await chrome.storage.local.set({ userId: this.userId });
+      console.log('PumpSpeak: Created new userId:', this.userId);
+    }
+    
+    return this.userId;
+  }
+
   async connect() {
+    // Ensure we have a userId first
+    await this.getOrCreateUserId();
+    
     const WS_URL = PUMPSPEAK_CONFIG.WS_URL;
     
     return new Promise((resolve, reject) => {
@@ -702,16 +722,36 @@ class VoiceClient {
 
   async switchRoom(newRoomId) {
     console.log('PumpSpeak: Switching to room:', newRoomId);
+    
+    // Leave current room and clean up
     this.leaveRoom();
+    
+    // Update room ID
     this.roomId = newRoomId;
+    
+    // Rejoin with new room
     this.send({ type: 'join', roomId: this.roomId, userId: this.userId });
+    
+    // Important: Update UI to show we're now alone in new room
+    this.updateWidgetUsers();
   }
 
   leaveRoom() {
-    this.peers.forEach(peer => peer.close());
+    // Close all peer connections
+    this.peers.forEach(peer => {
+      peer.close();
+    });
     this.peers.clear();
     this.peerSpeakingState.clear();
-    this.send({ type: 'leave', roomId: this.roomId, userId: this.userId });
+    
+    // Notify server we're leaving
+    if (this.roomId) {
+      this.send({ type: 'leave', roomId: this.roomId, userId: this.userId });
+    }
+    
+    // Clean up remote audio elements
+    document.querySelectorAll('[id^="ps-audio-"]').forEach(el => el.remove());
+    
     this.updateWidgetUsers();
   }
 

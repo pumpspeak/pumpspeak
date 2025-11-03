@@ -57,13 +57,30 @@ chrome.runtime.onInstalled.addListener((details) => {
   if (details.reason === 'install') {
     console.log('PumpSpeak: Extension installed');
     
+    // Generate unique userId for this installation
+    const userId = 'user_' + Math.random().toString(36).substr(2, 9);
+    
     // Set default settings
     chrome.storage.sync.set({
       serverUrl: 'ws://localhost:8080',
       volume: 100,
       autoConnect: true
     });
+    
+    // Store persistent userId in local storage (shared across all tabs)
+    chrome.storage.local.set({ userId });
+    
+    console.log('PumpSpeak: Generated userId:', userId);
   } else if (details.reason === 'update') {
     console.log('PumpSpeak: Extension updated to', chrome.runtime.getManifest().version);
+    
+    // For upgrades: ensure userId exists (backward compatibility)
+    chrome.storage.local.get(['userId'], (result) => {
+      if (!result.userId) {
+        const userId = 'user_' + Math.random().toString(36).substr(2, 9);
+        chrome.storage.local.set({ userId });
+        console.log('PumpSpeak: Generated userId for existing installation:', userId);
+      }
+    });
   }
 });
