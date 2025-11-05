@@ -489,6 +489,12 @@ class VoiceClient {
     const { userId } = message;
     if (userId === this.userId) return;
 
+    // Prevent duplicate peer connections
+    if (this.peers.has(userId)) {
+      console.log('PumpSpeak: User', userId, 'already connected, ignoring duplicate join');
+      return;
+    }
+
     console.log('PumpSpeak: New user:', userId);
     const peer = await this.createPeerConnection(userId, true);
     this.peers.set(userId, peer);
@@ -523,13 +529,12 @@ class VoiceClient {
 
     if (this.localStream) {
       this.localStream.getTracks().forEach(track => {
-        const sender = pc.addTrack(track, this.localStream);
-        console.log('PumpSpeak: Added local track to peer', userId, 'enabled:', track.enabled);
+        pc.addTrack(track, this.localStream);
       });
     }
 
     pc.ontrack = (event) => {
-      console.log('PumpSpeak: 🎵 Remote track received from', userId, 'streams:', event.streams.length);
+      console.log('PumpSpeak: Remote track received from', userId);
       this.playRemoteStream(userId, event.streams[0]);
     };
 
@@ -614,37 +619,16 @@ class VoiceClient {
   }
 
   playRemoteStream(userId, stream) {
-    console.log('PumpSpeak: Playing remote stream from', userId, 'tracks:', stream.getTracks().length);
-    
-    // Check if stream has audio tracks
-    const audioTracks = stream.getAudioTracks();
-    if (audioTracks.length === 0) {
-      console.warn('PumpSpeak: No audio tracks in stream from', userId);
-      return;
-    }
-    
-    console.log('PumpSpeak: Audio tracks:', audioTracks.map(t => ({ id: t.id, enabled: t.enabled, muted: t.muted })));
-    
     let audio = document.getElementById(`ps-audio-${userId}`);
     if (!audio) {
       audio = document.createElement('audio');
       audio.id = `ps-audio-${userId}`;
       audio.autoplay = true;
       document.body.appendChild(audio);
-      console.log('PumpSpeak: Created audio element for', userId);
     }
     
     audio.srcObject = stream;
     audio.volume = this.volume;
-    
-    // Explicitly play audio (autoplay may be blocked by browser)
-    audio.play()
-      .then(() => {
-        console.log('PumpSpeak: ✅ Audio playing for', userId);
-      })
-      .catch(err => {
-        console.error('PumpSpeak: ❌ Audio autoplay blocked for', userId, err);
-      });
     
     // Detect when remote user is speaking
     this.detectSpeaking(userId, stream);
@@ -696,25 +680,16 @@ class VoiceClient {
         }
       });
       
-      console.log('PumpSpeak: ✅ Microphone enabled, tracks:', this.localStream.getAudioTracks().length);
-      
       // Muted by default (push-to-talk)
       this.localStream.getAudioTracks().forEach(track => {
         track.enabled = false;
-        console.log('PumpSpeak: Audio track muted (push-to-talk mode), id:', track.id);
       });
 
-      // Add tracks to existing peers
-      let addedCount = 0;
-      this.peers.forEach((peer, userId) => {
+      this.peers.forEach(peer => {
         this.localStream.getTracks().forEach(track => {
           peer.addTrack(track, this.localStream);
-          addedCount++;
         });
-        console.log('PumpSpeak: Added tracks to existing peer:', userId);
       });
-      
-      console.log('PumpSpeak: Total tracks added to', this.peers.size, 'peers');
 
       this.isMicEnabled = true;
       this.updateWidgetUsers();
@@ -730,8 +705,6 @@ class VoiceClient {
         track.enabled = true;
       });
       this.isTalking = true;
-      console.log('PumpSpeak: 🎤 Started talking, audio tracks enabled:', 
-        this.localStream.getAudioTracks().map(t => t.enabled));
       this.updateWidgetUsers();
     }
   }
@@ -742,7 +715,6 @@ class VoiceClient {
         track.enabled = false;
       });
       this.isTalking = false;
-      console.log('PumpSpeak: 🔇 Stopped talking, audio tracks disabled');
       this.updateWidgetUsers();
     }
   }
