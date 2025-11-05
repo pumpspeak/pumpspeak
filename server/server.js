@@ -20,24 +20,30 @@ const server = http.createServer((req, res) => {
 const wss = new WebSocket.Server({ server });
 
 wss.on('connection', (ws) => {
-  console.log('New WebSocket connection');
+  console.log('🔌 New WebSocket connection');
 
   ws.on('message', (data) => {
     try {
       const message = JSON.parse(data);
       handleMessage(ws, message);
     } catch (error) {
-      console.error('Message parsing error:', error);
+      console.error('❌ Message parsing error:', error);
+      console.error('   Raw data:', data.toString().substring(0, 100));
     }
   });
 
   ws.on('close', () => {
-    console.log('Connection closed');
+    const clientData = clients.get(ws);
+    if (clientData) {
+      console.log(`🔌 Connection closed: ${clientData.userId}`);
+    } else {
+      console.log('🔌 Connection closed (unidentified client)');
+    }
     handleDisconnect(ws);
   });
 
   ws.on('error', (error) => {
-    console.error('WebSocket error:', error);
+    console.error('❌ WebSocket error:', error.message);
   });
 });
 
@@ -64,57 +70,67 @@ function handleMessage(ws, message) {
 function handleJoin(ws, message) {
   const { roomId, userId } = message;
   
-  console.log(`User ${userId} joining room ${roomId}`);
+  console.log(`✅ User ${userId} joining room ${roomId.substring(0, 12)}...`);
 
   // If the user was already in a room, remove them
   const existingClient = clients.get(ws);
   if (existingClient) {
+    console.log(`⚠️  User ${userId} was in another room, removing first`);
     handleLeave(ws, { roomId: existingClient.roomId, userId: existingClient.userId });
   }
 
   // Add the user to the room
   if (!rooms.has(roomId)) {
     rooms.set(roomId, new Set());
+    console.log(`📦 Created new room ${roomId.substring(0, 12)}...`);
   }
   
   const room = rooms.get(roomId);
   
-  // Notify other users in the room
+  // Get list of EXISTING users (before adding new user)
+  const existingUsers = Array.from(room).map(client => {
+    const clientData = clients.get(client);
+    return clientData ? clientData.userId : null;
+  }).filter(Boolean);
+  
+  console.log(`👥 Existing users in room: [${existingUsers.join(', ')}]`);
+  
+  // Notify other users in the room about the new user
   const joinMessage = JSON.stringify({
     type: 'user-joined',
     userId: userId,
     roomId: roomId
   });
 
+  let notifiedCount = 0;
   room.forEach(client => {
     if (client !== ws && client.readyState === WebSocket.OPEN) {
       client.send(joinMessage);
+      notifiedCount++;
     }
   });
+  
+  console.log(`📢 Notified ${notifiedCount} user(s) about ${userId} joining`);
 
   // Add the new client to the room
   room.add(ws);
   clients.set(ws, { userId, roomId });
 
-  // Send the list of users to the new client
-  const usersList = Array.from(room).map(client => {
-    const clientData = clients.get(client);
-    return clientData ? clientData.userId : null;
-  }).filter(Boolean);
-
+  // Send the list of OTHER users to the new client (excluding self)
   ws.send(JSON.stringify({
     type: 'users-list',
-    users: usersList,
+    users: existingUsers,
     roomId: roomId
   }));
 
-  console.log(`Room ${roomId} now has ${room.size} user(s)`);
+  console.log(`📋 Sent user list to ${userId}: [${existingUsers.join(', ')}]`);
+  console.log(`✨ Room ${roomId.substring(0, 12)}... now has ${room.size} user(s)`);
 }
 
 function handleLeave(ws, message) {
   const { roomId, userId } = message;
   
-  console.log(`User ${userId} leaving room ${roomId}`);
+  console.log(`👋 User ${userId} leaving room ${roomId ? roomId.substring(0, 12) + '...' : 'unknown'}`);
 
   const room = rooms.get(roomId);
   if (room) {
@@ -127,19 +143,25 @@ function handleLeave(ws, message) {
       roomId: roomId
     });
 
+    let notifiedCount = 0;
     room.forEach(client => {
       if (client.readyState === WebSocket.OPEN) {
         client.send(leaveMessage);
+        notifiedCount++;
       }
     });
+    
+    console.log(`📢 Notified ${notifiedCount} user(s) that ${userId} left`);
 
     // Remove the room if it's empty
     if (room.size === 0) {
       rooms.delete(roomId);
-      console.log(`Room ${roomId} deleted (empty)`);
+      console.log(`🗑️  Room ${roomId.substring(0, 12)}... deleted (empty)`);
     } else {
-      console.log(`Room ${roomId} now has ${room.size} user(s)`);
+      console.log(`📊 Room ${roomId.substring(0, 12)}... now has ${room.size} user(s)`);
     }
+  } else {
+    console.log(`⚠️  Room ${roomId} not found for user ${userId}`);
   }
 
   clients.delete(ws);
@@ -147,6 +169,8 @@ function handleLeave(ws, message) {
 
 function handleSignaling(ws, message) {
   const { to, from, type } = message;
+  
+  console.log(`🔄 Signaling ${type}: ${from} → ${to}`);
   
   // Find the recipient
   let targetWs = null;
@@ -160,9 +184,19 @@ function handleSignaling(ws, message) {
   if (targetWs && targetWs.readyState === WebSocket.OPEN) {
     // Forward the message to the recipient
     targetWs.send(JSON.stringify(message));
-    console.log(`Message ${type} forwarded from ${from} to ${to}`);
+    console.log(`✅ ${type} forwarded: ${from} → ${to}`);
+    
+    // Additional info for debugging
+    if (type === 'offer') {
+      console.log(`   📤 Offer contains SDP: ${message.offer ? 'yes' : 'no'}`);
+    } else if (type === 'answer') {
+      console.log(`   📥 Answer contains SDP: ${message.answer ? 'yes' : 'no'}`);
+    } else if (type === 'ice-candidate') {
+      console.log(`   🧊 ICE candidate: ${message.candidate ? message.candidate.candidate.substring(0, 30) + '...' : 'null'}`);
+    }
   } else {
-    console.log(`Recipient ${to} not found or disconnected`);
+    console.error(`❌ Recipient ${to} not found or disconnected (from: ${from})`);
+    console.log(`   Available users: ${Array.from(clients.values()).map(c => c.userId).join(', ')}`);
   }
 }
 
