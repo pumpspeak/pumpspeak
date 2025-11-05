@@ -75,7 +75,31 @@ function handleJoin(ws, message) {
   // If the user was already in a room, remove them
   const existingClient = clients.get(ws);
   if (existingClient) {
-    console.log(`⚠️  User ${userId} was in another room, removing first`);
+    // Check if they're rejoining the same room
+    if (existingClient.roomId === roomId && existingClient.userId === userId) {
+      console.log(`⚠️  User ${userId} already in this room, ignoring duplicate join`);
+      // Just resend the users list (maybe they missed it)
+      const room = rooms.get(roomId);
+      if (room) {
+        const existingUsers = Array.from(room)
+          .map(client => {
+            const clientData = clients.get(client);
+            return clientData ? clientData.userId : null;
+          })
+          .filter(Boolean)
+          .filter(id => id !== userId); // Exclude self
+        
+        ws.send(JSON.stringify({
+          type: 'users-list',
+          users: existingUsers,
+          roomId: roomId
+        }));
+        console.log(`📋 Resent user list to ${userId}: [${existingUsers.join(', ')}]`);
+      }
+      return; // Don't process further
+    }
+    
+    console.log(`⚠️  User ${userId} switching from room ${existingClient.roomId.substring(0, 12)}... to ${roomId.substring(0, 12)}...`);
     handleLeave(ws, { roomId: existingClient.roomId, userId: existingClient.userId });
   }
 
@@ -172,17 +196,44 @@ function handleSignaling(ws, message) {
   
   console.log(`🔄 Signaling ${type}: ${from} → ${to}`);
   
+  // Verify sender is in a room
+  const senderData = clients.get(ws);
+  if (!senderData) {
+    console.error(`❌ Sender ${from} not registered`);
+    return;
+  }
+  
   // Find the recipient
   let targetWs = null;
+  let targetData = null;
   for (const [client, data] of clients.entries()) {
     if (data.userId === to) {
       targetWs = client;
+      targetData = data;
       break;
     }
   }
 
-  if (targetWs && targetWs.readyState === WebSocket.OPEN) {
-    // Forward the message to the recipient
+  if (!targetWs || !targetData) {
+    console.error(`❌ Recipient ${to} not found (from: ${from})`);
+    console.log(`   Available users: ${Array.from(clients.values()).map(c => c.userId).join(', ')}`);
+    return;
+  }
+
+  // Verify both users are in the same room
+  if (senderData.roomId !== targetData.roomId) {
+    console.error(`❌ Users not in same room: ${from} (${senderData.roomId.substring(0, 8)}...) → ${to} (${targetData.roomId.substring(0, 8)}...)`);
+    return;
+  }
+
+  // Verify WebSocket is open
+  if (targetWs.readyState !== WebSocket.OPEN) {
+    console.error(`❌ Recipient ${to} WebSocket not open (state: ${targetWs.readyState})`);
+    return;
+  }
+
+  // Forward the message to the recipient
+  try {
     targetWs.send(JSON.stringify(message));
     console.log(`✅ ${type} forwarded: ${from} → ${to}`);
     
@@ -194,9 +245,8 @@ function handleSignaling(ws, message) {
     } else if (type === 'ice-candidate') {
       console.log(`   🧊 ICE candidate: ${message.candidate ? message.candidate.candidate.substring(0, 30) + '...' : 'null'}`);
     }
-  } else {
-    console.error(`❌ Recipient ${to} not found or disconnected (from: ${from})`);
-    console.log(`   Available users: ${Array.from(clients.values()).map(c => c.userId).join(', ')}`);
+  } catch (error) {
+    console.error(`❌ Error sending ${type} from ${from} to ${to}:`, error.message);
   }
 }
 
